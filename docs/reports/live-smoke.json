@@ -1,0 +1,382 @@
+{
+  "application_commit": "5dbca84445ea1ea24f882e7bea31392a17801295",
+  "verified_at_utc": "2026-10-18T06:06:44.580773+00:00",
+  "base_url": "https://dropout-tech.github.io/kt-crm-demo/",
+  "total_checks": 85,
+  "suites": [
+    {
+      "suite": "live-core",
+      "testedAt": "2026-10-18T06:05:41.149Z",
+      "checks": [
+        {
+          "name": "prototype label, original brand asset and 50-item catalog remain intact",
+          "result": "passed"
+        },
+        {
+          "name": "zero-step linked memo saves and preserves every existing case follow-up",
+          "result": "passed"
+        },
+        {
+          "name": "five independent follow-ups append to the case without replacing original work",
+          "result": "passed"
+        },
+        {
+          "name": "new opportunity title is required and invalid submit preserves the written memo",
+          "result": "passed"
+        },
+        {
+          "name": "initial memo creates a linked opportunity without quotation or pricing fields",
+          "result": "passed"
+        },
+        {
+          "name": "unlinked follow-ups appear on the work page and retain enterprise context",
+          "result": "passed"
+        },
+        {
+          "name": "saved memo creates an opportunity carrying both original follow-ups exactly once",
+          "result": "passed"
+        },
+        {
+          "name": "link selector offers only opportunities from the memo company",
+          "result": "passed"
+        },
+        {
+          "name": "linking existing memo persists across reload",
+          "result": "passed"
+        },
+        {
+          "name": "case edits support multiple steps, stable references and removal without corrupting notes",
+          "result": "passed"
+        },
+        {
+          "name": "standalone opportunity requires a name and allows zero steps",
+          "result": "passed"
+        },
+        {
+          "name": "changing memo company clears incompatible case and contact without discarding draft steps",
+          "result": "passed"
+        },
+        {
+          "name": "cancelled reset preserves created notes and opportunities",
+          "result": "passed"
+        },
+        {
+          "name": "new customer retains its classification and can edit it",
+          "result": "passed"
+        },
+        {
+          "name": "first interaction with a new customer exposes flexible inline contact fields",
+          "result": "passed"
+        },
+        {
+          "name": "phone/LINE channel, custom category, new contact role and selected products survive reload",
+          "result": "passed"
+        },
+        {
+          "name": "case reopens product multi-selection and can return to undecided",
+          "result": "passed"
+        },
+        {
+          "name": "unselected search text cannot silently save to the previously selected customer",
+          "result": "passed"
+        },
+        {
+          "name": "typed customer search handles 150 customers and resets incompatible contact/case safely",
+          "result": "passed"
+        },
+        {
+          "name": "separate browser contexts remain independent, demonstrating the shared-backend gap honestly",
+          "result": "passed"
+        },
+        {
+          "name": "320px home: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "320px company: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "320px case: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "320px memo: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "320px review: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "320px multi-step modal stays inside viewport and save is reachable",
+          "result": "passed"
+        },
+        {
+          "name": "390px home: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "390px company: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "390px case: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "390px memo: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "390px review: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "390px multi-step modal stays inside viewport and save is reachable",
+          "result": "passed"
+        },
+        {
+          "name": "768px home: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "768px company: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "768px case: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "768px memo: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "768px review: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "1024px home: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "1024px company: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "1024px case: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "1024px memo: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "1024px review: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "1440px home: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "1440px company: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "1440px case: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "1440px memo: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "1440px review: no horizontal overflow or review UI",
+          "result": "passed"
+        },
+        {
+          "name": "1440px multi-step modal stays inside viewport and save is reachable",
+          "result": "passed"
+        },
+        {
+          "name": "legacy browser storage is read without resetting user notes",
+          "result": "passed"
+        },
+        {
+          "name": "no browser runtime errors or external API requests",
+          "result": "passed"
+        }
+      ],
+      "errors": [],
+      "externalRequests": [],
+      "result": "passed"
+    },
+    {
+      "suite": "live-catalog",
+      "testedAt": "2026-10-18T06:05:45.365Z",
+      "features": 50,
+      "mode": "numbered read-only table",
+      "checks": [
+        {
+          "name": "50 uniquely numbered read-only feature rows",
+          "result": "passed"
+        },
+        {
+          "name": "KT wishes and common CRM candidates both present with scope labels",
+          "result": "passed"
+        },
+        {
+          "name": "search retains stable feature number and records no preferences",
+          "result": "passed"
+        },
+        {
+          "name": "ERP, quotation and reserved finance fields keep stable numbers 47 to 50",
+          "result": "passed"
+        },
+        {
+          "name": "table has no overflow at 320px",
+          "result": "passed"
+        },
+        {
+          "name": "table has no overflow at 390px",
+          "result": "passed"
+        },
+        {
+          "name": "table has no overflow at 768px",
+          "result": "passed"
+        },
+        {
+          "name": "table has no overflow at 1024px",
+          "result": "passed"
+        },
+        {
+          "name": "table has no overflow at 1440px",
+          "result": "passed"
+        },
+        {
+          "name": "home page has no review entry or prototype evaluation text",
+          "result": "passed"
+        },
+        {
+          "name": "company page has no review entry or prototype evaluation text",
+          "result": "passed"
+        },
+        {
+          "name": "case page has no review entry or prototype evaluation text",
+          "result": "passed"
+        },
+        {
+          "name": "memo page has no review entry or prototype evaluation text",
+          "result": "passed"
+        },
+        {
+          "name": "review page has no review entry or prototype evaluation text",
+          "result": "passed"
+        },
+        {
+          "name": "four mobile nav targets remain at least 44px",
+          "result": "passed"
+        }
+      ]
+    },
+    {
+      "suite": "live-quote",
+      "testedAt": "2026-10-18T06:05:48.296Z",
+      "checks": [
+        {
+          "name": "synthetic visit success persists without real location",
+          "result": "passed"
+        },
+        {
+          "name": "synthetic visit permission-denied persists without real location",
+          "result": "passed"
+        },
+        {
+          "name": "synthetic visit timeout persists without real location",
+          "result": "passed"
+        },
+        {
+          "name": "synthetic visit unsupported persists without real location",
+          "result": "passed"
+        },
+        {
+          "name": "channel and customer changes clear synthetic check-in safely",
+          "result": "passed"
+        },
+        {
+          "name": "sales creates a quote draft and cannot download before approval",
+          "result": "passed"
+        },
+        {
+          "name": "another sales view cannot edit, confirm, approve or download this draft",
+          "result": "passed"
+        },
+        {
+          "name": "supervisor return requires a reason and records it on the current version",
+          "result": "passed"
+        },
+        {
+          "name": "revised v2 is confirmed and separately approved before a test PDF downloads",
+          "result": "passed"
+        },
+        {
+          "name": "editing approved price creates v3 and invalidates both confirmations and download",
+          "result": "passed"
+        },
+        {
+          "name": "long items, exact large totals and long notes create a paginated test PDF",
+          "result": "passed"
+        },
+        {
+          "name": "320px quote list and form stay inside viewport",
+          "result": "passed"
+        },
+        {
+          "name": "390px quote list and form stay inside viewport",
+          "result": "passed"
+        },
+        {
+          "name": "768px quote list and form stay inside viewport",
+          "result": "passed"
+        },
+        {
+          "name": "1024px quote list and form stay inside viewport",
+          "result": "passed"
+        },
+        {
+          "name": "1440px quote list and form stay inside viewport",
+          "result": "passed"
+        },
+        {
+          "name": "mobile viewport downloads approved PDF and exposes only four main targets",
+          "result": "passed"
+        },
+        {
+          "name": "synthetic trial makes no location calls, external requests or runtime errors",
+          "result": "passed"
+        }
+      ],
+      "errors": [],
+      "externalRequests": [],
+      "geolocationCalls": 0
+    },
+    {
+      "suite": "live-schedule",
+      "testedAt": "2026-10-18T06:05:52.420Z",
+      "checks": [
+        {
+          "name": "1440px weekly draft shows 11 checkpoints, 9 readiness rows, 10 conditional estimates and company demo link",
+          "result": "passed"
+        },
+        {
+          "name": "390px weekly draft shows 11 checkpoints, 9 readiness rows, 10 conditional estimates and company demo link",
+          "result": "passed"
+        }
+      ],
+      "errors": [],
+      "result": "passed"
+    }
+  ]
+}

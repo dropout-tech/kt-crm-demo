@@ -1,0 +1,55 @@
+{
+  "application_commit": "5dbca84445ea1ea24f882e7bea31392a17801295",
+  "verified_at_utc": "2026-10-18T06:06:44.580773+00:00",
+  "files": [
+    {
+      "path": "index.html",
+      "http_status": 200,
+      "expected_sha256": "d3bb4ca870d145dc329a3e2b421210985bd1688bda9ae07b23aae4c31ce78ee8",
+      "actual_sha256": "d3bb4ca870d145dc329a3e2b421210985bd1688bda9ae07b23aae4c31ce78ee8",
+      "matches": true
+    },
+    {
+      "path": "app.js",
+      "http_status": 200,
+      "expected_sha256": "9731af5bbf1525740245164589b247e54165d7085a784d47a3f38bb8b44584b0",
+      "actual_sha256": "9731af5bbf1525740245164589b247e54165d7085a784d47a3f38bb8b44584b0",
+      "matches": true
+    },
+    {
+      "path": "model.js",
+      "http_status": 200,
+      "expected_sha256": "dc8fc0c53b22ca639205d24d22b880446c3437f279b0f04d5441f22fd1071828",
+      "actual_sha256": "dc8fc0c53b22ca639205d24d22b880446c3437f279b0f04d5441f22fd1071828",
+      "matches": true
+    },
+    {
+      "path": "quote-pdf.js",
+      "http_status": 200,
+      "expected_sha256": "f495c2b6ae409614b1850c65279883c8538696d2d58064a08543dfaa30a1577c",
+      "actual_sha256": "f495c2b6ae409614b1850c65279883c8538696d2d58064a08543dfaa30a1577c",
+      "matches": true
+    },
+    {
+      "path": "styles.css",
+      "http_status": 200,
+      "expected_sha256": "c45fe991233fcb056c35906c03b13c3bf42decd6b6269a45a0c21caabc00cdad",
+      "actual_sha256": "c45fe991233fcb056c35906c03b13c3bf42decd6b6269a45a0c21caabc00cdad",
+      "matches": true
+    },
+    {
+      "path": "assets/kingtile-logo.svg",
+      "http_status": 200,
+      "expected_sha256": "4809d6353a2dcbb64c687165b651fbfecb4b227b1602c237e79256e112845819",
+      "actual_sha256": "4809d6353a2dcbb64c687165b651fbfecb4b227b1602c237e79256e112845819",
+      "matches": true
+    },
+    {
+      "path": "weekly-plan.html",
+      "http_status": 200,
+      "expected_sha256": "5fbd3e70a0803dfed8ae6059cbacc143378f0aa1ac1a0b7d70bc20dc1737292c",
+      "actual_sha256": "5fbd3e70a0803dfed8ae6059cbacc143378f0aa1ac1a0b7d70bc20dc1737292c",
+      "matches": true
+    }
+  ]
+}
