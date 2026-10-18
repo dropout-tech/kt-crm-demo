@@ -1,0 +1,15 @@
+{
+  "testedAt": "2026-10-18T06:03:14.816Z",
+  "checks": [
+    {
+      "name": "1440px weekly draft shows 11 checkpoints, 9 readiness rows, 10 conditional estimates and company demo link",
+      "result": "passed"
+    },
+    {
+      "name": "390px weekly draft shows 11 checkpoints, 9 readiness rows, 10 conditional estimates and company demo link",
+      "result": "passed"
+    }
+  ],
+  "errors": [],
+  "result": "passed"
+}

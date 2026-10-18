@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "鉅成 CRM 財務事實預留資料契約草案",
+  "description": "僅為待確認的資料結構，尚未接入正式資料庫；所有金額、幣別、階段及責任可留空，不計算獎金、成本、毛利、利潤或分潤。",
+  "type": "object",
+  "required": ["caseId"],
+  "properties": {
+    "caseId": { "type": "string" },
+    "currencyCode": { "type": ["string", "null"], "description": "不得由系統自行假設幣別。" },
+    "milestones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "stageLabel": { "type": ["string", "null"] },
+          "eventKind": { "type": ["string", "null"], "description": "訂金、開立發票、實際收款等事件需依制度分清，發票不等於已收款。" },
+          "occurredOn": { "type": ["string", "null"] },
+          "amountSourceValue": { "type": ["string", "null"], "description": "保存金額原值，單位與精度規則待核；不推導獎金。" },
+          "sourceReference": { "type": ["string", "null"] },
+          "confirmedByAccountId": { "type": ["string", "null"] },
+          "bonusRulesReference": { "type": ["string", "null"], "description": "制度來源參照，不存未確認比例或公式。" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "costFacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "kind": { "enum": ["raw_material", "labor", "freight", "accessory", null] },
+          "estimatedAmountSourceValue": { "type": ["string", "null"] },
+          "actualAmountSourceValue": { "type": ["string", "null"] },
+          "sourceReference": { "type": ["string", "null"] },
+          "responsibleParty": { "type": ["string", "null"], "description": "工班、運費與處理責任待核，不自動指派。" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "collectionResponsibleAccountId": { "type": ["string", "null"], "description": "追款責任待確認，預設不指派。" }
+  },
+  "additionalProperties": false
+}

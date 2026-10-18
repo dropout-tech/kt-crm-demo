@@ -1,0 +1,80 @@
+{
+  "testedAt": "2026-10-18T06:01:17.515Z",
+  "checks": [
+    {
+      "name": "synthetic visit success persists without real location",
+      "result": "passed"
+    },
+    {
+      "name": "synthetic visit permission-denied persists without real location",
+      "result": "passed"
+    },
+    {
+      "name": "synthetic visit timeout persists without real location",
+      "result": "passed"
+    },
+    {
+      "name": "synthetic visit unsupported persists without real location",
+      "result": "passed"
+    },
+    {
+      "name": "channel and customer changes clear synthetic check-in safely",
+      "result": "passed"
+    },
+    {
+      "name": "sales creates a quote draft and cannot download before approval",
+      "result": "passed"
+    },
+    {
+      "name": "another sales view cannot edit, confirm, approve or download this draft",
+      "result": "passed"
+    },
+    {
+      "name": "supervisor return requires a reason and records it on the current version",
+      "result": "passed"
+    },
+    {
+      "name": "revised v2 is confirmed and separately approved before a test PDF downloads",
+      "result": "passed"
+    },
+    {
+      "name": "editing approved price creates v3 and invalidates both confirmations and download",
+      "result": "passed"
+    },
+    {
+      "name": "long items, exact large totals and long notes create a paginated test PDF",
+      "result": "passed"
+    },
+    {
+      "name": "320px quote list and form stay inside viewport",
+      "result": "passed"
+    },
+    {
+      "name": "390px quote list and form stay inside viewport",
+      "result": "passed"
+    },
+    {
+      "name": "768px quote list and form stay inside viewport",
+      "result": "passed"
+    },
+    {
+      "name": "1024px quote list and form stay inside viewport",
+      "result": "passed"
+    },
+    {
+      "name": "1440px quote list and form stay inside viewport",
+      "result": "passed"
+    },
+    {
+      "name": "mobile viewport downloads approved PDF and exposes only four main targets",
+      "result": "passed"
+    },
+    {
+      "name": "synthetic trial makes no location calls, external requests or runtime errors",
+      "result": "passed"
+    }
+  ],
+  "errors": [],
+  "externalRequests": [],
+  "geolocationCalls": 0
+}

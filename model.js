@@ -2,6 +2,16 @@
   'use strict';
   const STORAGE_KEY = 'jucheng-requirement-prototype-v1';
   const STATUSES = ['需求確認', '進行中', '待回覆', '已完成'];
+  // Series names checked against the user's 2026 catalog; these IDs are not ERP SKUs.
+  const CATALOG_PRODUCTS = [
+    { id: 'series-spc-pro', name: '鈦晶 SPC Pro' },
+    { id: 'series-spc', name: '鈦晶 SPC' },
+    { id: 'series-lvt', name: '鈦晶 LVT' },
+    { id: 'series-tile', name: '鈦晶磁磚' },
+    { id: 'series-lvt-custom', name: 'LVT 訂製系列' }
+  ];
+  const MEMO_CATEGORY_EXAMPLES = ['初次聯繫', '需求確認', '現場勘查', '產品說明', '報價追蹤', '進度追蹤'];
+  const QUOTE_STATUSES = ['草稿', '待主管審核', '已核准', '退回修改'];
   const MODULES = [
     { id: 'company', name: '企業與 Account 歸屬', kind: '核心流程', source: '需求確認候選', question: '同一企業會有多位負責業務嗎？交接時由誰調整歸屬？', flow: '找企業 → 看負責業務 → 調整 Account 歸屬' },
     { id: 'contact', name: '企業下的聯絡人', kind: '核心流程', source: '需求確認候選', question: '聯絡人與企業的負責業務可能不同嗎？需要哪些聯絡方式？', flow: '選企業 → 找所屬聯絡人 → 看聯絡與負責方式' },
@@ -18,13 +28,13 @@
   const FEATURES = [
     ['account', '企業與聯絡人', '企業主檔與 Account 歸屬', '企業、負責業務及最近聯繫集中查看。', '企業交接由誰決定？一間企業能否多人共同負責？', '會議核心', '可試用', 'company'],
     ['contacts', '企業與聯絡人', '企業下的多位聯絡人', '保存窗口角色、聯絡方式示意與負責業務。', '同一人會對應多間企業嗎？哪些欄位是必要？', '會議核心', '可試用', 'company'],
-    ['tags', '企業與聯絡人', '客戶分類與標籤', '按企業類型、區域或往來階段快速篩選。', '分類由誰維護？現行有哪些實際分類？', 'B2B候選', '尚未實作'],
+    ['tags', '企業與聯絡人', '客戶分類與標籤', '保留與編輯客戶分類；區域、階段等複合篩選待補。', '分類由誰維護？現行有哪些實際分類？', '會議確認', '分類可試用／篩選待補'],
     ['dedupe', '企業與聯絡人', '重複資料檢查與合併', '匯入或新增時辨識疑似重複企業、聯絡人。', '用哪些資訊比對？誰有權合併？', 'B2B候選', '尚未實作'],
     ['memo', '拜訪與往來', 'Call memo／業務報告', '記錄聯繫重點、下一步、接手人及日期。', '誰填、何時填？哪些內容需要主管確認？', '會議核心', '可試用', 'memo'],
     ['timeline', '拜訪與往來', '企業往來時間序', '沿企業與聯絡人查看歷次往來脈絡。', '接手業務最需要看到哪些歷史？', '會議核心', '可試用', 'company'],
     ['visit', '拜訪與往來', '拜訪計畫與行事曆', '安排預計拜訪、參與人員與追蹤事項。', '已有行事曆嗎？需要共用哪些資訊？', 'B2B候選', '尚未實作'],
     ['attachments', '拜訪與往來', '照片、文件與附件', '將示意照片或文件關聯到企業、案件或往來。', '檔案種類、大小及保存年限為何？', 'B2B候選', '尚未實作'],
-    ['attendance', '拜訪與往來', '外勤與打卡', '確認是否需要外勤時間或地點紀錄。', '拜訪紀錄是否已足夠？何時才需要定位？', '會議延伸', '尚未實作'],
+    ['attendance', '拜訪與往來', '現場拜訪定位打卡', '本機可試合成成功、拒絕、逾時及不支援情境；非實際位置。正式定位與手機權限測試未完成。', '定位使用與保存規則待確認。', '會議確認', '合成流程可試'],
     ['recording', '拜訪與往來', '錄音與快速備忘', '確認語音輸入、錄音或會議備忘的使用情境。', '錄音同意、保存及查閱規則由誰訂定？', '會議延伸', '尚未實作'],
     ['next-step', '追蹤與協作', '案件下一步與接手人', '每個案件記錄下一步、負責人與預計日期。', '交接是否需要接手人確認？', '會議核心', '可試用', 'case'],
     ['tasks', '追蹤與協作', '獨立待辦與多人協作', '管理不屬於案件的待辦、指派與完成回報。', '一件任務能否多人處理？完成如何判定？', 'B2B候選', '尚未實作'],
@@ -39,7 +49,7 @@
     ['import', '資料與匯入', 'Excel／CSV 匯入與欄位對照', '將既有企業、聯絡人資料依欄位對照匯入。', '現有資料在哪？誰整理重複與缺漏？', 'B2B候選', '尚未實作'],
     ['export', '資料與匯入', '業務資料匯出', '依授權匯出企業、案件或往來資料。', '哪些角色可匯出？需留紀錄或遮蔽哪些欄位？', 'B2B候選', '尚未實作'],
     ['fields', '資料與匯入', '自訂欄位與必填規則', '依實際工作方式調整欄位、選項與檢查規則。', '哪些欄位必填？維護權限與改版方式為何？', 'B2B候選', '尚未實作'],
-    ['roles', '權限與治理', '正式登入與角色權限', '定義業務、主管、管理員的查閱與操作範圍。', '跨業務、跨部門如何授權？離職時怎麼停用？', 'B2B候選', '尚未實作'],
+    ['roles', '權限與治理', '正式登入與三層角色權限', '登入帳號決定管理者、業務主管與業務身分；正式系統不可自行切換角色。', '聯絡方式、記事、案件與金額的細部權限待核。', '會議確認', '本期排程／未實作'],
     ['audit', '權限與治理', '異動與查閱紀錄', '保留歸屬、案件及重要資料異動歷程。', '哪些操作需追溯？需保存多久？', 'B2B候選', '尚未實作'],
     ['backup', '權限與治理', '備份與資料保存', '確認備份、復原、保存與刪除規則。', '可接受遺失多久的資料？誰負責復原？', 'B2B候選', '尚未實作'],
     ['inbox', '通知與入口', '系統內通知中心', '集中查看待辦、交接與需要確認的事項。', '哪些事件值得通知？如何避免干擾？', 'B2B候選', '尚未實作'],
@@ -61,11 +71,11 @@
     ['mobile', '拜訪與往來', '手機與外勤操作', '手機可查看企業、案件與往來，現場快速留下 Memo。', '', 'B2B候選', '可試用', 'home'],
     ['global-search', '資料與匯入', '全站搜尋', '跨企業、聯絡人、案件、紀錄及文件查找資訊。', '', 'B2B候選', '尚未實作'],
     ['dashboards', '主管與報表', '自訂儀表板', '按角色配置業務活動、商機及服務指標的檢視畫面。', '', 'B2B候選', '尚未實作'],
-    ['products', '案件與商機', '產品／服務目錄', '查詢常用產品或服務資料並關聯商機；正式價格與庫存另議。', '', 'B2B候選', '尚未實作'],
-    ['erp', '另行評估：ERP與財務', 'ERP 主檔／訂單串接', '需另行調查既有ERP、欄位與整合成本。', '系統廠商、授權與介接方式？範圍需另議。', '另行評估', '未實作／另議'],
-    ['quotation', '另行評估：ERP與財務', '報價與版本管理', '報價規則、核准與有效期間需另行定義。', '價格與折扣從何而來？誰能核准？範圍需另議。', '另行評估', '未實作／另議'],
-    ['cost-profit', '另行評估：ERP與財務', '成本、毛利與損益', '涉及財務來源、計算口徑與敏感資料權限。', '成本來源與計算公式？誰能看？範圍需另議。', '另行評估', '未實作／另議'],
-    ['payment', '另行評估：ERP與財務', '付款與應收追蹤', '付款流程與財務系統責任需另行評估。', '與財務如何分工？是否只顯示摘要？範圍需另議。', '另行評估', '未實作／另議']
+    ['products', '案件與商機', '型錄產品多選或未定', '依提供的型錄選擇產品系列，支援多選或未定；正式料號與庫存尚未對接。', '', '會議確認', '可試用'],
+    ['erp', '本期排程與財務預留', 'CRM 成交建單與 ERP 串接', 'CRM 建單後送 ERP，寫入後人工核對；建單與庫存查詢分開估工。', '待 ERP API、料號對照與技術對口。', '會議確認', '本期排程／未串接'],
+    ['quotation', '本期排程與財務預留', 'CRM 報價、主管審核與 PDF', '本機可試草稿、業務確認、主管模擬核准及測試 PDF；正式範本與伺服器授權未完成。不依賴 ERP 開報價。', '待報價樣式、價格規則與核准細節。', '會議確認', '合成流程可試'],
+    ['cost-profit', '本期排程與財務預留', '原料、工班、運費與附屬成本欄位', '先預留資料結構，不做尚未確認的成本、利潤或抽成公式。', '資料來源與責任待確認。', '會議確認', '欄位設計／未實作'],
+    ['payment', '本期排程與財務預留', '分階段獎金與收款欄位預留', '保留訂金、發票、收款等資料，實際獎金規則與追款責任待提供。', '不預設比例或自動結算。', '會議確認', '欄位設計／未實作']
   ].map(([id, group, name, description, question, origin, status, page]) => ({ id, group, name, description, question, origin, status, page }));
   function emptySelections() {
     return Object.fromEntries(FEATURES.map(f => [f.id, { decision: '', priority: '', role: '', note: '', updatedAt: null }]));
@@ -76,6 +86,23 @@
   }
   function normalizeState(state) {
     state.featureSelections = { ...emptySelections(), ...(state.featureSelections || {}) };
+    if (state.quotes === undefined) state.quotes = [];
+    if (!Array.isArray(state.followUps)) {
+      state.followUps = [];
+      for (const item of state.cases) {
+        if (!item.nextAction?.trim()) continue;
+        const memo = state.memos.filter(m => m.caseId === item.id).sort((a, b) => Date.parse(b.occurredAt) - Date.parse(a.occurredAt))[0];
+        const matches = memo?.nextAction === item.nextAction && memo.nextOwnerId === item.nextOwnerId && (memo.dueDate || '') === (item.dueDate || '');
+        const step = { id: 'legacy-' + item.id, companyId: item.companyId, caseId: item.id, memoId: matches ? memo.id : '', title: item.nextAction, ownerId: item.nextOwnerId, dueDate: item.dueDate || '', active: true };
+        state.followUps.push(step);
+        if (matches) memo.followUpIds = [step.id];
+      }
+      for (const memo of state.memos.filter(item => !item.caseId && item.nextAction?.trim())) {
+        const step = { id: 'legacy-memo-' + memo.id, companyId: memo.companyId, caseId: '', memoId: memo.id, title: memo.nextAction, ownerId: memo.nextOwnerId, dueDate: memo.dueDate || '', active: true };
+        state.followUps.push(step);
+        memo.followUpIds = [step.id];
+      }
+    }
     return state;
   }
   function saveFeature(state, id, input) {
@@ -95,7 +122,7 @@
     return '\uFEFF' + rows.map(r => r.map(cell).join(',')).join('\r\n');
   }
   function seed() {
-    return {
+    return normalizeState({
       schemaVersion: 1,
       updatedAt: null,
       users: [
@@ -133,7 +160,7 @@
       ],
       featureSelections: emptySelections(),
       reviews: Object.fromEntries(MODULES.map(m => [m.id, { decision: '', role: '', note: '', updatedAt: null }]))
-    };
+    });
   }
   function clone(data) { return JSON.parse(JSON.stringify(data)); }
   function required(value, label) {
@@ -141,59 +168,272 @@
     if (value.length > 2000) throw new Error(label + '過長（上限 2,000 字）');
     return value.trim();
   }
+  function shortText(value, limit, label) {
+    if (value === undefined || value === '') return '';
+    if (typeof value !== 'string' || value.length > limit) throw new Error(label + '格式錯誤或過長（上限 ' + limit + ' 字）');
+    return value.trim();
+  }
+  function productSelection(value) {
+    if (value === undefined) return [];
+    if (!Array.isArray(value) || new Set(value).size !== value.length || !value.every(id => CATALOG_PRODUCTS.some(product => product.id === id))) throw new Error('請選擇有效的型錄產品，或保留未定');
+    return [...value];
+  }
+  function simulateCheckIn(scenario = 'success') {
+    if (!['success', 'permission-denied', 'timeout', 'unsupported'].includes(scenario)) throw new Error('未知定位測試情境');
+    return { mode: 'synthetic', status: scenario, attemptedAt: new Date().toISOString(), position: scenario === 'success' ? { latitude: 25, longitude: 121.5, accuracyMeters: 20 } : null };
+  }
+  function checkInValue(value, channel) {
+    if (value === undefined || value === null) return null;
+    if (channel !== '拜訪') throw new Error('定位測試只可關聯現場拜訪記事');
+    if (value.mode !== 'synthetic' || !['success', 'permission-denied', 'timeout', 'unsupported'].includes(value.status) || !Number.isFinite(Date.parse(value.attemptedAt))) throw new Error('請使用有效的合成定位測試資料');
+    const point = value.position;
+    if (value.status === 'success') {
+      if (!point || typeof point.latitude !== 'number' || !Number.isFinite(point.latitude) || Math.abs(point.latitude) > 90 || typeof point.longitude !== 'number' || !Number.isFinite(point.longitude) || Math.abs(point.longitude) > 180 || typeof point.accuracyMeters !== 'number' || !Number.isFinite(point.accuracyMeters) || point.accuracyMeters < 0) throw new Error('合成定位座標或精度無效');
+    } else if (point !== null) throw new Error('失敗的定位測試不可保留座標');
+    return { mode: 'synthetic', status: value.status, attemptedAt: value.attemptedAt, position: point ? { latitude: point.latitude, longitude: point.longitude, accuracyMeters: point.accuracyMeters } : null };
+  }
+  function prepareContact(state, company, input) {
+    reference(state.users, input.ownerId || company.ownerId, '負責業務');
+    return { id: newId('ct'), companyId: company.id, name: required(shortText(input.name, 120, '聯絡人名稱'), '聯絡人名稱'), contactMethod: shortText(input.contactMethod, 200, '聯絡方式') || '聯絡方式待補', ownerId: input.ownerId || company.ownerId, title: shortText(input.title, 120, '窗口角色') || '角色待補' };
+  }
   function reference(list, id, label) {
     const value = list.find(x => x.id === id);
     if (!value) throw new Error(label + '不存在，請重新選擇');
     return value;
   }
+  function newId(prefix) { return prefix + '-' + (root.crypto?.randomUUID?.() || Date.now() + '-' + Math.random().toString(36).slice(2)); }
+  function validDate(value) {
+    if (value === undefined || value === '') return true;
+    return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
+  }
+  function prepareSteps(state, input, limit = 50) {
+    const entries = input.nextSteps === undefined ? (input.nextAction?.trim() ? [{ title: input.nextAction, ownerId: input.nextOwnerId, dueDate: input.dueDate || '' }] : []) : input.nextSteps;
+    if (!Array.isArray(entries) || entries.length > limit) throw new Error('下一步格式錯誤（每次上限 ' + limit + ' 筆）');
+    const ids = new Set();
+    return entries.map(entry => {
+      if (!entry || typeof entry !== 'object') throw new Error('下一步格式錯誤');
+      const title = required(entry.title, '下一步內容');
+      reference(state.users, entry.ownerId, '下一步負責人');
+      if (!validDate(entry.dueDate)) throw new Error('請填寫有效的下一步日期');
+      if (entry.id && (typeof entry.id !== 'string' || ids.has(entry.id))) throw new Error('下一步識別碼重複或無效');
+      if (entry.id) ids.add(entry.id);
+      return { id: entry.id || newId('step'), title, ownerId: entry.ownerId, dueDate: entry.dueDate || '' };
+    });
+  }
+  function caseFollowUps(state, caseId) { return (state.followUps || []).filter(step => step.caseId === caseId && step.active); }
+  function memoFollowUps(state, memo) {
+    if (Array.isArray(memo.followUpIds)) return memo.followUpIds.map(id => state.followUps.find(step => step.id === id)).filter(Boolean);
+    return memo.nextAction ? [{ title: memo.nextAction, ownerId: memo.nextOwnerId, dueDate: memo.dueDate || '', active: true, legacy: true }] : [];
+  }
+  // Retain the old summary fields for existing saved data and integrations with this prototype.
+  function syncCaseSummary(state, item) {
+    const first = caseFollowUps(state, item.id)[0];
+    Object.assign(item, { nextAction: first?.title || '', nextOwnerId: first?.ownerId || state.companies.find(co => co.id === item.companyId).ownerId, dueDate: first?.dueDate || '' });
+  }
   function addMemo(state, input) {
     const company = reference(state.companies, input.companyId, '企業');
-    const contact = reference(state.contacts, input.contactId, '聯絡人');
+    if (input.createContact && input.contactId) throw new Error('請選既有聯絡人或新增聯絡人其中一種');
+    const contact = input.createContact ? prepareContact(state, company, input.newContact || {}) : reference(state.contacts, input.contactId, '聯絡人');
     if (contact.companyId !== company.id) throw new Error('聯絡人必須屬於所選企業');
-    const linked = input.caseId ? reference(state.cases, input.caseId, '案件') : null;
+    let linked = input.caseId ? reference(state.cases, input.caseId, '案件') : null;
     if (linked && linked.companyId !== company.id) throw new Error('案件必須屬於所選企業');
     reference(state.users, input.authorId, '紀錄人');
-    reference(state.users, input.nextOwnerId, '下一步負責人');
     if (!input.occurredAt || !Number.isFinite(Date.parse(input.occurredAt))) throw new Error('請填寫有效的聯繫時間');
+    const steps = prepareSteps(state, input);
+    if (steps.some(step => (state.followUps || []).some(existing => existing.id === step.id))) throw new Error('新記事不可覆寫既有下一步');
+    if (input.createCase) {
+      if (linked) throw new Error('請選擇建立商機或關聯既有案件其中一種');
+      linked = { id: newId('ca'), companyId: company.id, title: required(input.newCaseTitle, '案件名稱'), productIds: productSelection(input.productIds), status: '需求確認', lastContactAt: null, nextAction: '', nextOwnerId: company.ownerId, dueDate: '' };
+    }
     const memo = {
-      id: 'm-' + (root.crypto?.randomUUID?.() || Date.now() + '-' + Math.random().toString(36).slice(2)),
+      id: newId('m'),
       companyId: company.id, contactId: contact.id, caseId: linked?.id || '', authorId: input.authorId,
-      occurredAt: input.occurredAt, summary: required(input.summary, '往來重點'),
-      nextAction: required(input.nextAction, '下一步'), nextOwnerId: input.nextOwnerId,
-      channel: required(input.channel, '聯繫方式'), dueDate: input.dueDate || ''
+      occurredAt: input.occurredAt, summary: required(input.summary, '往來重點'), category: shortText(input.category, 120, '記事類別'),
+      nextAction: steps[0]?.title || '', nextOwnerId: steps[0]?.ownerId || input.authorId,
+      channel: required(input.channel, '聯繫方式'), dueDate: steps[0]?.dueDate || '', followUpIds: steps.map(step => step.id), checkIn: checkInValue(input.checkIn, input.channel)
     };
+    normalizeState(state);
+    if (input.createContact) state.contacts.push(contact);
+    if (input.createCase) state.cases.push(linked);
+    const additions = steps.map(step => ({ ...step, companyId: company.id, memoId: memo.id, caseId: memo.caseId, active: true }));
+    if (linked?.lastContactAt && Date.parse(memo.occurredAt) < Date.parse(linked.lastContactAt)) state.followUps.push(...additions);
+    else state.followUps.unshift(...additions);
     state.memos.unshift(memo);
     if (linked && (!linked.lastContactAt || Date.parse(memo.occurredAt) >= Date.parse(linked.lastContactAt))) {
-      Object.assign(linked, { lastContactAt: memo.occurredAt, nextAction: memo.nextAction, nextOwnerId: memo.nextOwnerId, dueDate: memo.dueDate });
+      linked.lastContactAt = memo.occurredAt;
+      syncCaseSummary(state, linked);
     }
     return memo;
   }
   function updateCase(state, id, input) {
     const item = reference(state.cases, id, '案件');
     if (!STATUSES.includes(input.status)) throw new Error('請選擇有效的案件進度');
-    reference(state.users, input.nextOwnerId, '下一步負責人');
-    Object.assign(item, { status: input.status, nextAction: required(input.nextAction, '下一步'), nextOwnerId: input.nextOwnerId, dueDate: input.dueDate || '' });
+    const productIds = productSelection(input.productIds === undefined ? item.productIds : input.productIds);
+    const steps = prepareSteps(state, input, 1000);
+    for (const step of steps) {
+      const existing = (state.followUps || []).find(value => value.id === step.id);
+      if (existing && (existing.caseId !== id || !existing.active)) throw new Error('下一步必須屬於此案件且仍在追蹤');
+      if (input.nextSteps?.some(value => value.id === step.id) && !existing) throw new Error('既有下一步不存在');
+    }
+    normalizeState(state);
+    const submitted = new Set(steps.map(step => step.id));
+    for (const old of state.followUps.filter(step => step.caseId === id && step.active)) { if (!submitted.has(old.id)) old.active = false; }
+    for (const step of steps) {
+      const existing = state.followUps.find(value => value.id === step.id);
+      if (existing) Object.assign(existing, step);
+      else state.followUps.push({ ...step, companyId: item.companyId, caseId: id, memoId: '', active: true });
+    }
+    item.status = input.status;
+    item.productIds = productIds;
+    syncCaseSummary(state, item);
     return item;
   }
   function addCompany(state, input) {
     reference(state.users, input.ownerId, '負責業務');
-    const item = { id: 'co-' + Date.now() + '-' + Math.random().toString(36).slice(2), name: required(input.name, '示範企業名稱'), ownerId: input.ownerId, category: '自建模擬企業', note: '使用者新增的合成情境。' };
+    const item = { id: 'co-' + Date.now() + '-' + Math.random().toString(36).slice(2), name: required(input.name, '示範企業名稱'), ownerId: input.ownerId, category: shortText(input.category, 120, '客戶分類') || '未分類', note: '使用者新增的合成情境。' };
     state.companies.push(item);
     return item;
   }
   function addContact(state, input) {
-    reference(state.companies, input.companyId, '企業');
-    reference(state.users, input.ownerId, '負責業務');
-    const item = { id: 'ct-' + Date.now() + '-' + Math.random().toString(36).slice(2), companyId: input.companyId, name: required(input.name, '示範聯絡人名稱'), contactMethod: required(input.contactMethod, '聯絡方式示意'), ownerId: input.ownerId, title: input.title?.trim() || '窗口待確認' };
+    const company = reference(state.companies, input.companyId, '企業');
+    const item = prepareContact(state, company, input);
     state.contacts.push(item);
     return item;
   }
-  function addCase(state, input) {
-    reference(state.companies, input.companyId, '企業');
-    const item = { id: 'ca-' + Date.now() + '-' + Math.random().toString(36).slice(2), companyId: input.companyId, title: required(input.title, '示範案件名稱'), lastContactAt: null };
-    state.cases.push(item);
-    try { updateCase(state, item.id, input); } catch (error) { state.cases.pop(); throw error; }
+  function updateCompanyCategory(state, id, value) {
+    const item = reference(state.companies, id, '企業');
+    item.category = shortText(value, 120, '客戶分類') || '未分類';
     return item;
+  }
+  function addCase(state, input) {
+    const company = reference(state.companies, input.companyId, '企業');
+    if (!STATUSES.includes(input.status)) throw new Error('請選擇有效的案件進度');
+    const steps = prepareSteps(state, input);
+    if (input.nextSteps?.some(step => step.id)) throw new Error('新案件不可使用既有下一步識別碼');
+    const item = { id: newId('ca'), companyId: input.companyId, title: required(input.title, '案件名稱'), productIds: productSelection(input.productIds), lastContactAt: null, status: input.status, nextAction: '', nextOwnerId: company.ownerId, dueDate: '' };
+    normalizeState(state);
+    state.cases.push(item);
+    state.followUps.push(...steps.map(step => ({ ...step, companyId: item.companyId, caseId: item.id, memoId: '', active: true })));
+    syncCaseSummary(state, item);
+    return item;
+  }
+  function linkMemo(state, memoId, caseId) {
+    const memo = reference(state.memos, memoId, '記事');
+    const item = reference(state.cases, caseId, '案件');
+    if (memo.companyId !== item.companyId) throw new Error('記事與案件必須屬於同一企業');
+    if (memo.caseId && memo.caseId !== caseId) throw new Error('記事已關聯其他案件，請保留原關聯');
+    const legacySteps = !Array.isArray(memo.followUpIds) ? prepareSteps(state, memo) : [];
+    normalizeState(state);
+    if (!Array.isArray(memo.followUpIds)) {
+      const steps = legacySteps;
+      memo.followUpIds = steps.map(step => step.id);
+      state.followUps.push(...steps.map(step => ({ ...step, companyId: memo.companyId, memoId, caseId: '', active: true })));
+    }
+    memo.caseId = caseId;
+    for (const id of memo.followUpIds) state.followUps.find(step => step.id === id).caseId = caseId;
+    if (!item.lastContactAt || Date.parse(memo.occurredAt) > Date.parse(item.lastContactAt)) item.lastContactAt = memo.occurredAt;
+    syncCaseSummary(state, item);
+    return memo;
+  }
+  function createCaseFromMemo(state, memoId, title, productIds = []) {
+    const memo = reference(state.memos, memoId, '記事');
+    if (memo.caseId) throw new Error('記事已有關聯案件');
+    const copy = clone(state);
+    const item = addCase(copy, { companyId: memo.companyId, title, productIds, status: '需求確認', nextSteps: [] });
+    linkMemo(copy, memoId, item.id);
+    Object.assign(state, copy);
+    return item;
+  }
+  function decimalUnits(value, precision, label) {
+    const text = typeof value === 'number' ? String(value) : value;
+    if (typeof text !== 'string' || !new RegExp('^(0|[1-9]\\d{0,8})(\\.\\d{1,' + precision + '})?$').test(text)) throw new Error(label + '格式錯誤');
+    const [whole, fraction = ''] = text.split('.');
+    return BigInt(whole) * 10n ** BigInt(precision) + BigInt(fraction.padEnd(precision, '0'));
+  }
+  function prepareQuote(input) {
+    const title = required(shortText(input.title, 200, '報價名稱'), '報價名稱');
+    const currency = shortText(input.currency, 3, '測試幣別');
+    if (!/^[A-Z]{3}$/.test(currency)) throw new Error('請填寫三碼測試幣別');
+    if (!validDate(input.validUntil)) throw new Error('報價有效日期無效');
+    if (!Array.isArray(input.items) || input.items.length < 1 || input.items.length > 50) throw new Error('測試報價需有 1 至 50 個品項');
+    const items = input.items.map(item => {
+      if (!item || typeof item !== 'object') throw new Error('報價品項格式錯誤');
+      const quantity = decimalUnits(item.quantity, 3, '數量'), price = decimalUnits(item.unitPrice, 2, '測試單價');
+      if (quantity <= 0n) throw new Error('數量需大於零');
+      const amountMinor = ((quantity * price + 500n) / 1000n).toString();
+      return { description: required(shortText(item.description, 200, '品項說明'), '品項說明'), quantity: String(item.quantity), unit: shortText(item.unit, 20, '單位') || '式', unitPrice: String(item.unitPrice), amountMinor };
+    });
+    return { title, currency, validUntil: input.validUntil || '', note: shortText(input.note, 2000, '測試備註'), items, totalMinor: items.reduce((sum, item) => sum + BigInt(item.amountMinor), 0n).toString() };
+  }
+  function quoteActor(state, id) { return reference(state.users, id, '測試角色'); }
+  function quoteRecord(state, id) { return reference(state.quotes || [], id, '報價'); }
+  function quoteEvent(quote, action, actorId, extra = {}) { return { action, actorId, version: quote.version, at: new Date().toISOString(), testOnly: true, ...extra }; }
+  function createQuote(state, input, actorId) {
+    const actor = quoteActor(state, actorId);
+    if (actor.role !== 'sales') throw new Error('此測試情境由示範業務建立草稿');
+    const item = reference(state.cases, input.caseId, '案件');
+    const prepared = prepareQuote(input);
+    const quote = { id: newId('quote'), caseId: item.id, companyId: item.companyId, createdBy: actorId, testOnly: true, version: 1, status: '草稿', ...prepared, salesConfirmation: null, review: null, history: [], revisions: [] };
+    quote.history.push(quoteEvent(quote, '建立草稿', actorId));
+    normalizeState(state); state.quotes.unshift(quote);
+    return quote;
+  }
+  function updateQuote(state, id, input, actorId) {
+    const quote = quoteRecord(state, id), actor = quoteActor(state, actorId);
+    if (actor.role !== 'sales' || quote.createdBy !== actorId) throw new Error('此測試情境限建立草稿的業務修改');
+    const prepared = prepareQuote(input);
+    const { history, revisions, ...snapshot } = quote;
+    revisions.push(clone(snapshot));
+    Object.assign(quote, prepared, { version: quote.version + 1, status: '草稿', salesConfirmation: null, review: null });
+    history.push(quoteEvent(quote, '修改後重新確認', actorId));
+    return quote;
+  }
+  function confirmQuote(state, id, actorId) {
+    const quote = quoteRecord(state, id), actor = quoteActor(state, actorId);
+    if (actor.role !== 'sales' || quote.createdBy !== actorId) throw new Error('此測試情境限建立草稿的業務確認');
+    if (quote.status !== '草稿') throw new Error('請先保存草稿再送主管審核');
+    prepareQuote(quote);
+    quote.salesConfirmation = { actorId, version: quote.version, at: new Date().toISOString(), testOnly: true };
+    quote.status = '待主管審核';
+    quote.history.push(quoteEvent(quote, '業務確認並送審', actorId));
+    return quote;
+  }
+  function reviewQuote(state, id, actorId, decision, reason = '') {
+    const quote = quoteRecord(state, id), actor = quoteActor(state, actorId);
+    if (actor.role !== 'supervisor' || actorId === quote.createdBy) throw new Error('此測試情境需由示範主管審核');
+    if (quote.status !== '待主管審核' || quote.salesConfirmation?.version !== quote.version) throw new Error('需先完成目前版本的業務確認');
+    if (!['approve', 'return'].includes(decision)) throw new Error('未知審核決定');
+    const note = shortText(reason, 1000, '審核說明');
+    if (decision === 'return' && !note) throw new Error('請填寫測試退回原因');
+    quote.review = { actorId, version: quote.version, decision, reason: note, at: new Date().toISOString(), testOnly: true };
+    quote.status = decision === 'approve' ? '已核准' : '退回修改';
+    quote.history.push(quoteEvent(quote, decision === 'approve' ? '主管模擬核准' : '主管退回修改', actorId, { reason: note }));
+    return quote;
+  }
+  function validQuote(state, quote) {
+    try {
+      const item = reference(state.cases, quote.caseId, '案件'), creator = quoteActor(state, quote.createdBy);
+      if (quote.testOnly !== true || quote.companyId !== item.companyId || creator.role !== 'sales' || !QUOTE_STATUSES.includes(quote.status) || !Number.isInteger(quote.version) || quote.version < 1 || !Array.isArray(quote.history) || !Array.isArray(quote.revisions)) return false;
+      const prepared = prepareQuote(quote);
+      if (prepared.totalMinor !== quote.totalMinor || !prepared.items.every((row, index) => row.amountMinor === quote.items[index].amountMinor)) return false;
+      if (quote.status === '草稿') return quote.salesConfirmation === null && quote.review === null;
+      const confirm = quote.salesConfirmation;
+      if (!confirm || confirm.actorId !== quote.createdBy || confirm.version !== quote.version || confirm.testOnly !== true || !Number.isFinite(Date.parse(confirm.at))) return false;
+      if (quote.status === '待主管審核') return quote.review === null;
+      const review = quote.review;
+      return !!review && review.testOnly === true && review.version === quote.version && review.actorId !== quote.createdBy && quoteActor(state, review.actorId).role === 'supervisor' && Number.isFinite(Date.parse(review.at)) && (quote.status === '已核准' ? review.decision === 'approve' : review.decision === 'return' && !!review.reason);
+    } catch { return false; }
+  }
+  function formatQuoteMoney(value) {
+    if (!/^\d+$/.test(String(value))) throw new Error('測試金額格式無效');
+    const digits = String(value).padStart(3, '0');
+    return digits.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '.' + digits.slice(-2);
+  }
+  function approvedQuoteData(state, id, actorId) {
+    const quote = quoteRecord(state, id), actor = quoteActor(state, actorId);
+    if (!validQuote(state, quote) || quote.status !== '已核准') throw new Error('目前版本尚未核准，不可下載測試 PDF');
+    if (actor.role !== 'supervisor' && actor.id !== quote.createdBy) throw new Error('此測試情境不允許此業務下載');
+    return { ...clone(quote), companyName: reference(state.companies, quote.companyId, '企業').name, caseTitle: reference(state.cases, quote.caseId, '案件').title, salesName: quoteActor(state, quote.createdBy).name, reviewerName: quoteActor(state, quote.review.actorId).name, watermark: '測試樣張／範本待確認／不可對外正式報價' };
   }
   function saveReview(state, id, input) {
     if (!MODULES.some(x => x.id === id)) throw new Error('未知評審模組');
@@ -229,6 +469,16 @@
       if (!data.companies.every(x => typeof x.name === 'string' && users.has(x.ownerId))) return false;
       if (!data.contacts.every(x => typeof x.name === 'string' && typeof x.contactMethod === 'string' && companies.has(x.companyId) && users.has(x.ownerId))) return false;
       if (!data.cases.every(x => typeof x.title === 'string' && typeof x.nextAction === 'string' && STATUSES.includes(x.status) && companies.has(x.companyId) && users.has(x.nextOwnerId))) return false;
+      for (const item of data.cases) productSelection(item.productIds);
+      for (const memo of data.memos) { shortText(memo.category, 120, '記事類別'); checkInValue(memo.checkIn, memo.channel); }
+      if (data.quotes !== undefined && (!Array.isArray(data.quotes) || data.quotes.length > 10000 || ids(data.quotes).size !== data.quotes.length || !data.quotes.every(quote => validQuote(data, quote)))) return false;
+      if (data.followUps !== undefined) {
+        if (!Array.isArray(data.followUps) || data.followUps.length > 50000) return false;
+        const stepIds = ids(data.followUps), memoIds = ids(data.memos);
+        if (stepIds.size !== data.followUps.length || memoIds.size !== data.memos.length) return false;
+        if (!data.followUps.every(step => typeof step.title === 'string' && !!required(step.title, '下一步') && users.has(step.ownerId) && companies.has(step.companyId) && typeof step.active === 'boolean' && validDate(step.dueDate) && (!step.caseId || cases.has(step.caseId) && data.cases.find(c => c.id === step.caseId).companyId === step.companyId) && (!step.memoId || memoIds.has(step.memoId) && data.memos.find(m => m.id === step.memoId).companyId === step.companyId && data.memos.find(m => m.id === step.memoId).caseId === step.caseId && data.memos.find(m => m.id === step.memoId).followUpIds?.includes(step.id)))) return false;
+        if (!data.memos.every(memo => memo.followUpIds === undefined || Array.isArray(memo.followUpIds) && new Set(memo.followUpIds).size === memo.followUpIds.length && memo.followUpIds.every(id => stepIds.has(id) && data.followUps.find(step => step.id === id).memoId === memo.id))) return false;
+      } else if (data.memos.some(memo => memo.followUpIds !== undefined)) return false;
       if (data.featureSelections !== undefined) {
         if (!data.featureSelections || typeof data.featureSelections !== 'object' || Array.isArray(data.featureSelections)) return false;
         for (const [id, value] of Object.entries(data.featureSelections)) { if (!FEATURES.some(f => f.id === id)) return false; selection(value); }
@@ -236,7 +486,7 @@
       return data.memos.every(x => typeof x.summary === 'string' && typeof x.nextAction === 'string' && Number.isFinite(Date.parse(x.occurredAt)) && companies.has(x.companyId) && contacts.has(x.contactId) && users.has(x.authorId) && users.has(x.nextOwnerId) && (!x.caseId || cases.has(x.caseId)) && data.contacts.find(c => c.id === x.contactId).companyId === x.companyId && (!x.caseId || data.cases.find(c => c.id === x.caseId).companyId === x.companyId));
     } catch { return false; }
   }
-  const api = { FEATURES, FEATURE_DECISIONS, PRIORITIES, normalizeState, saveFeature, feedbackCSV, STORAGE_KEY, STATUSES, MODULES, seed, clone, addMemo, updateCase, addCompany, addContact, addCase, saveReview, lastContact, exportFeedback, importFeedback, validState };
+  const api = { FEATURES, FEATURE_DECISIONS, PRIORITIES, normalizeState, saveFeature, feedbackCSV, STORAGE_KEY, STATUSES, CATALOG_PRODUCTS, MEMO_CATEGORY_EXAMPLES, QUOTE_STATUSES, MODULES, seed, clone, addMemo, updateCase, addCompany, addContact, updateCompanyCategory, addCase, caseFollowUps, memoFollowUps, linkMemo, createCaseFromMemo, simulateCheckIn, checkInValue, createQuote, updateQuote, confirmQuote, reviewQuote, approvedQuoteData, formatQuoteMoney, saveReview, lastContact, exportFeedback, importFeedback, validState };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.CRM = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

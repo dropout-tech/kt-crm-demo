@@ -1,0 +1,67 @@
+{
+  "testedAt": "2026-10-18T06:00:12.979Z",
+  "features": 50,
+  "mode": "numbered read-only table",
+  "checks": [
+    {
+      "name": "50 uniquely numbered read-only feature rows",
+      "result": "passed"
+    },
+    {
+      "name": "KT wishes and common CRM candidates both present with scope labels",
+      "result": "passed"
+    },
+    {
+      "name": "search retains stable feature number and records no preferences",
+      "result": "passed"
+    },
+    {
+      "name": "ERP, quotation and reserved finance fields keep stable numbers 47 to 50",
+      "result": "passed"
+    },
+    {
+      "name": "table has no overflow at 320px",
+      "result": "passed"
+    },
+    {
+      "name": "table has no overflow at 390px",
+      "result": "passed"
+    },
+    {
+      "name": "table has no overflow at 768px",
+      "result": "passed"
+    },
+    {
+      "name": "table has no overflow at 1024px",
+      "result": "passed"
+    },
+    {
+      "name": "table has no overflow at 1440px",
+      "result": "passed"
+    },
+    {
+      "name": "home page has no review entry or prototype evaluation text",
+      "result": "passed"
+    },
+    {
+      "name": "company page has no review entry or prototype evaluation text",
+      "result": "passed"
+    },
+    {
+      "name": "case page has no review entry or prototype evaluation text",
+      "result": "passed"
+    },
+    {
+      "name": "memo page has no review entry or prototype evaluation text",
+      "result": "passed"
+    },
+    {
+      "name": "review page has no review entry or prototype evaluation text",
+      "result": "passed"
+    },
+    {
+      "name": "four mobile nav targets remain at least 44px",
+      "result": "passed"
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "testedAt": "2026-10-18T05:57:53.083Z",
+  "checks": [
+    {
+      "name": "prototype label, original brand asset and 50-item catalog remain intact",
+      "result": "passed"
+    },
+    {
+      "name": "zero-step linked memo saves and preserves every existing case follow-up",
+      "result": "passed"
+    },
+    {
+      "name": "five independent follow-ups append to the case without replacing original work",
+      "result": "passed"
+    },
+    {
+      "name": "new opportunity title is required and invalid submit preserves the written memo",
+      "result": "passed"
+    },
+    {
+      "name": "initial memo creates a linked opportunity without quotation or pricing fields",
+      "result": "passed"
+    },
+    {
+      "name": "unlinked follow-ups appear on the work page and retain enterprise context",
+      "result": "passed"
+    },
+    {
+      "name": "saved memo creates an opportunity carrying both original follow-ups exactly once",
+      "result": "passed"
+    },
+    {
+      "name": "link selector offers only opportunities from the memo company",
+      "result": "passed"
+    },
+    {
+      "name": "linking existing memo persists across reload",
+      "result": "passed"
+    },
+    {
+      "name": "case edits support multiple steps, stable references and removal without corrupting notes",
+      "result": "passed"
+    },
+    {
+      "name": "standalone opportunity requires a name and allows zero steps",
+      "result": "passed"
+    },
+    {
+      "name": "changing memo company clears incompatible case and contact without discarding draft steps",
+      "result": "passed"
+    },
+    {
+      "name": "cancelled reset preserves created notes and opportunities",
+      "result": "passed"
+    },
+    {
+      "name": "new customer retains its classification and can edit it",
+      "result": "passed"
+    },
+    {
+      "name": "first interaction with a new customer exposes flexible inline contact fields",
+      "result": "passed"
+    },
+    {
+      "name": "phone/LINE channel, custom category, new contact role and selected products survive reload",
+      "result": "passed"
+    },
+    {
+      "name": "case reopens product multi-selection and can return to undecided",
+      "result": "passed"
+    },
+    {
+      "name": "unselected search text cannot silently save to the previously selected customer",
+      "result": "passed"
+    },
+    {
+      "name": "typed customer search handles 150 customers and resets incompatible contact/case safely",
+      "result": "passed"
+    },
+    {
+      "name": "separate browser contexts remain independent, demonstrating the shared-backend gap honestly",
+      "result": "passed"
+    },
+    {
+      "name": "320px home: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "320px company: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "320px case: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "320px memo: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "320px review: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "320px multi-step modal stays inside viewport and save is reachable",
+      "result": "passed"
+    },
+    {
+      "name": "390px home: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "390px company: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "390px case: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "390px memo: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "390px review: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "390px multi-step modal stays inside viewport and save is reachable",
+      "result": "passed"
+    },
+    {
+      "name": "768px home: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "768px company: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "768px case: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "768px memo: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "768px review: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "1024px home: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "1024px company: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "1024px case: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "1024px memo: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "1024px review: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "1440px home: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "1440px company: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "1440px case: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "1440px memo: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "1440px review: no horizontal overflow or review UI",
+      "result": "passed"
+    },
+    {
+      "name": "1440px multi-step modal stays inside viewport and save is reachable",
+      "result": "passed"
+    },
+    {
+      "name": "legacy browser storage is read without resetting user notes",
+      "result": "passed"
+    },
+    {
+      "name": "no browser runtime errors or external API requests",
+      "result": "passed"
+    }
+  ],
+  "errors": [],
+  "externalRequests": [],
+  "result": "passed"
+}
